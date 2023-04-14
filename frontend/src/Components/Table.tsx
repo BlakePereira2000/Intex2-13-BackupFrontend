@@ -27,7 +27,7 @@ import {
   compareItems,
 } from "@tanstack/match-sorter-utils";
 
-import { Person } from "../makeData";
+import { makeData, Person } from "../makeData";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -80,65 +80,57 @@ function MyTable() {
         header: "Name",
         footer: (props) => props.column.id,
         columns: [
-          // {
-          //   accessorKey: "id",
-          //   cell: (info) => info.getValue(),
-          //   footer: (props) => props.column.id,
-          // },
           {
-            accessorKey: "burialid",
+            accessorKey: "firstName",
             cell: (info) => info.getValue(),
             footer: (props) => props.column.id,
           },
           {
-            accessorKey: "textilecolor",
-            header: "Textile Color",
+            accessorFn: (row) => row.lastName,
+            id: "lastName",
+            cell: (info) => info.getValue(),
+            header: () => <span>Last Name</span>,
             footer: (props) => props.column.id,
           },
           {
-            accessorKey: "textilestructure",
-            header: "Textile Structure",
+            accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+            id: "fullName",
+            header: "Full Name",
+            cell: (info) => info.getValue(),
+            footer: (props) => props.column.id,
+            filterFn: "fuzzy",
+            sortingFn: fuzzySort,
+          },
+        ],
+      },
+      {
+        header: "Info",
+        footer: (props) => props.column.id,
+        columns: [
+          {
+            accessorKey: "age",
+            header: () => "Age",
             footer: (props) => props.column.id,
           },
           {
-            accessorKey: "sex",
-            header: "Sex",
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: "depth",
-            header: "Depth",
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: "estimatestature",
-            header: "Estimate Stature",
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: "ageatdeath",
-            header: "Age At Death",
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: "headdirection",
-            header: "Head Direction",
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: "textilefuntion",
-            header: "Textile Funtion",
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: "haircolor",
-            header: "Hair Color",
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: "facebundles",
-            header: "Face Bundles",
-            footer: (props) => props.column.id,
+            header: "More Info",
+            columns: [
+              {
+                accessorKey: "visits",
+                header: () => <span>Visits</span>,
+                footer: (props) => props.column.id,
+              },
+              {
+                accessorKey: "status",
+                header: "Status",
+                footer: (props) => props.column.id,
+              },
+              {
+                accessorKey: "progress",
+                header: "Profile Progress",
+                footer: (props) => props.column.id,
+              },
+            ],
           },
         ],
       },
@@ -146,8 +138,8 @@ function MyTable() {
     []
   );
 
-  const [data, setData] = React.useState<Person[]>([]);
-  // const refreshData = () => setData((old) => makeData(50000));
+  const [data, setData] = React.useState<Person[]>(() => makeData(50000));
+  const refreshData = () => setData((old) => makeData(50000));
 
   const table = useReactTable({
     data,
@@ -174,25 +166,16 @@ function MyTable() {
     debugColumns: false,
   });
 
-  const [loading, setLoading] = React.useState(true);
-
   React.useEffect(() => {
-    async function fetchData() {
-      const rsp = await fetch("https://localhost:7183/frontend");
-      const temp = await rsp.json();
-      setData(temp);
-      setLoading(false);
+    if (table.getState().columnFilters[0]?.id === "fullName") {
+      if (table.getState().sorting[0]?.id !== "fullName") {
+        table.setSorting([{ id: "fullName", desc: false }]);
+      }
     }
-
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  }, [table.getState().columnFilters[0]?.id]);
 
   return (
-    <div className="p-2" style={{ overflowX: "auto" }}>
+    <div className="p-2">
       <div>
         <DebouncedInput
           value={globalFilter ?? ""}
@@ -326,10 +309,10 @@ function MyTable() {
       <div>
         <button onClick={() => rerender()}>Force Rerender</button>
       </div>
-      {/* <div>
+      <div>
         <button onClick={() => refreshData()}>Refresh Data</button>
       </div>
-      <pre>{JSON.stringify(table.getState(), null, 2)}</pre> */}
+      <pre>{JSON.stringify(table.getState(), null, 2)}</pre>
     </div>
   );
 }
