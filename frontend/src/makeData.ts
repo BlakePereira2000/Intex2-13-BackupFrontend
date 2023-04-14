@@ -3,13 +3,17 @@ import { faker } from "@faker-js/faker";
 
 export type Person = {
   id: number;
-  builderid: string;
+  burialid: string;
   textilecolor: string;
   textilestructure: string;
   sex: string;
   depth: number;
   estimatestature: number;
   ageatdeath: string;
+  headdirection: string;
+  textilefunction: string;
+  haircolor: string;
+  facebundles: string;
 
   // firstName: string;
   // lastName: string;
