@@ -11,14 +11,15 @@ import BurialSummary from "./Pages/BurialSummary";
 import Unsupervised from "./Pages/Unsupervised";
 import Admin from "./Pages/Admin";
 import Test from "./Pages/Testing";
-
+import MumHead from "./Pages/head"
+import Picture from "./Pages/unsuper"
 const theme = createTheme();
 
 const sections = [
   { title: "Home Page", url: "/" },
   { title: "Burial Summary", url: "/BurialSummary" },
-  { title: "Supervised", url: "/Supervised" },
-  { title: "Unsupervised", url: "/Unsupervised" },
+  { title: "Supervised", url: "/MumHead" },
+  { title: "Unsupervised", url: "/Picture" },
   { title: "Administrative", url: "/Admin" },
   { title: "Test", url: "/Testing" },
 ];
@@ -39,6 +40,8 @@ function App() {
             <Route path="/Unsupervised" element={<Unsupervised />} />
             <Route path="/Admin" element={<Admin />} />
             <Route path="/Testing" element={<Test />} />
+            <Route path="/MumHead" element={<MumHead />} />
+            <Route path="/Picture" element={<Picture />} />
           </Routes>
         </Router>
       </ThemeProvider>

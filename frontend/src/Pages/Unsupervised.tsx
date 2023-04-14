@@ -6,12 +6,13 @@ import MyBody from "../Components/MyBody";
 function StyledBody() {
   return (
     <MyBody>
-      <Typography variant="h2">Welcome to my App</Typography>
+      {/* <Typography variant="h2">Unsupervised Data</Typography>
       <Typography variant="body1">
         This is a styled body using Material UI in React TypeScript.
-      </Typography>
+      </Typography> */}
+    
     </MyBody>
-  );
+);
 }
 
 export default StyledBody;
