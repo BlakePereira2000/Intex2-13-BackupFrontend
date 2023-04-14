@@ -9,7 +9,6 @@ const MyBody = styled("div")({
   borderRadius: 4,
   minHeight: "100vh",
   display: "flex",
-  overflowX: "auto",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
