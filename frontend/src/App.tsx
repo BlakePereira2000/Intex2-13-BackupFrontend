@@ -13,6 +13,9 @@ import Admin from "./Pages/Admin";
 import Test from "./Pages/Testing";
 import MumHead from "./Pages/head"
 import Picture from "./Pages/unsuper"
+import LoginComponent from "./Pages/LoginComponent";
+import MyComponent from "./Pages/MyComponent";
+import PrivacyPolicy from "./Pages/policy";
 const theme = createTheme();
 
 const sections = [
@@ -22,6 +25,9 @@ const sections = [
   { title: "Unsupervised", url: "/Picture" },
   { title: "Administrative", url: "/Admin" },
   { title: "Test", url: "/Testing" },
+  { title: "Login", url: "/Login" },
+  { title: "Signup", url: "/Signup" },
+  { title: "Privacy Policy", url: "/Privacy" },
 ];
 
 function App() {
@@ -40,8 +46,11 @@ function App() {
             <Route path="/Unsupervised" element={<Unsupervised />} />
             <Route path="/Admin" element={<Admin />} />
             <Route path="/Testing" element={<Test />} />
+            <Route path="/Signup" element={<MyComponent />} />
+            <Route path="/Login" element={<LoginComponent />} />
             <Route path="/MumHead" element={<MumHead />} />
             <Route path="/Picture" element={<Picture />} />
+            <Route path="/Privacy" element={<PrivacyPolicy />} />
           </Routes>
         </Router>
       </ThemeProvider>
